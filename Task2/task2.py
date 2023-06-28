@@ -1,5 +1,5 @@
-print("Ввести стороны треугольника:")
-a, b, c = map(float, input().split())
-d = (a + b + c) / 2
-e = (d*(d-a)*(d-b)*(d-c)) ** 0.5
+print("Ввести стороны прямоугольника:")
+a, b = map(float, input().split())
+d = (a + b) * 2
+e = a * b
 print("периметр равен:", d, "площадь равна:", e )
