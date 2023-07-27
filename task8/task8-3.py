@@ -13,16 +13,20 @@ if not 1 <= b <= 100:
     exit()
 
 weight_mass = []
-common_weight = 0
 
 for i in range(b):
-    weight = int(input(f'Вес {i + 1} рыбака: '))
+    weight_mass.append(int(input(f'{i + 1} рыбака: ')))
+    weight_mass.sort()
+bort, y, x = 0, 0, b -1
 
-    if not 1 <= weight <= l:
-        print('Превышен максимальный вес рыбака')
-        exit()
+while y <= x:
+    if y == x:
+        bort += 1
+        break
+    if weight_mass[y] + weight_mass[x] <= l:
+        y += 1
+    x -= 1
+    bort += 1
 
-    weight_mass.append(weight)
-    common_weight += weight
-
-print(f'Минимальное количество лодок для перевозки - {math.ceil(common_weight / l)}')
+    
+print(f'Минимальное количество лодок для перевозки - {bort}')
