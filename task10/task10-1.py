@@ -17,5 +17,5 @@ for i in range(n):
     pets[pet_name] = pet_info
 
 for pet_name, pet_info in pets.items():
-    vozrast_str = "год" if pet_info["Возраст питомца"] == 1 else "лет"
+    vozrast_str = "год" if pet_info["Возраст питомца"] % 10 == 1 and pet_info["Возраст питомца"] != 11 else "года" if 2 <= pet_info["Возраст питомца"] % 10 <= 4 and (pet_info["Возраст питомца"] < 10 or pet_info["Возраст питомца"] > 20) else "лет"
     print(f"Это {pet_info['Вид питомца']} по кличке \"{pet_name}\". Возраст питомца: {pet_info['Возраст питомца']} {vozrast_str}. Имя владельца: {pet_info['Имя владельца']}")
