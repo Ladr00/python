@@ -23,21 +23,32 @@ class Turtle:
         if self.s > 1:
             self.s -= 1
         else:
-            raise ValueError("s не может стать меньше или равно 1.")
+            raise ValueError("не может стать меньше или равно 1.")
     
     def count_moves(self, x2, y2):
-        horizontal_moves = abs(x2 - self.x) // self.s
-        vertical_moves = abs(y2 - self.y) // self.s
-        total_moves = horizontal_moves + vertical_moves
+        horizontal_distance = abs(x2 - self.x)
+        vertical_distance = abs(y2 - self.y)
+        
+        if horizontal_distance % self.s == 0 and vertical_distance % self.s == 0:
+            total_moves = horizontal_distance // self.s + vertical_distance // self.s
+        else:
+            total_moves = -1
+        
         return total_moves
 
-turtle = Turtle(0, 0, 2)
-turtle.go_right()
-turtle.go_up()
-turtle.evolve()
-print("Текущая позиция черепашки:", turtle.x, turtle.y)
-print("Количество клеточек за ход:", turtle.s)
-turtle.degrade()
-print("Количество клеточек за ход после уменьшения:", turtle.s)
-moves_needed = turtle.count_moves(6, 4)
-print("Минимальное количество действий до точки (6, 4):", moves_needed)
+Turtle = Turtle(0, 0, 1)
+Turtle.go_right()
+Turtle.go_up()
+Turtle.evolve()
+print("Текущая позиция Черепашки:", Turtle.x, Turtle.y)
+print("Количество клеточек за ход:", Turtle.s)
+try:
+    Turtle.degrade()
+except ValueError as e:
+    print(e)
+print("Количество клеточек за ход после уменьшения:", Turtle.s)
+moves_needed = Turtle.count_moves(5, 5)
+if moves_needed == -1:
+    print("Точка недостижима с текущим шагом.")
+else:
+    print("Минимальное количество действий до точки (5, 5):", moves_needed)
