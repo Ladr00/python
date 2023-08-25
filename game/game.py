@@ -1,4 +1,3 @@
-#🌊🌲🚁🟩🔥💛🪣🏦☁️⚡️🏆◼️
 from pynput import keyboard
 from map import Map
 import time
@@ -20,7 +19,6 @@ clouds = Clouds(MAP_W, MAP_H)
 helico = Helico(MAP_W, MAP_H)
 
 MOVES = {'w': (-1, 0), 'd': (0, 1), 's': (1, 0), 'a': (0, -1)}
-# F -сохранение, g - восстановление
 def process_key(key):
     global helico
     c = key.char.lower()
