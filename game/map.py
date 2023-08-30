@@ -3,6 +3,7 @@ from utils import randcell
 from utils import randcell2
 import os
 
+
 # 0 -поле
 # 1 - дерево
 # 2 река
@@ -12,8 +13,11 @@ import os
 
 CELL_TYPES = "🟩🌳🌊🏥🏦🔥"
 TREE_BONUS = 100
+TREE_LOST = 20
 UPGRADE_COST = 5000
 LIFE_COST = 1000
+FIRE_UPDATE = 100
+score = 0
 
 class Map:
     def __init__(self, w, h):
@@ -25,6 +29,7 @@ class Map:
         self.generate_river(10)
         self.generate_upgrade_shop()
         self.generate_hospital()
+        
 
 
     def check_bounds(self, x, y):
@@ -92,42 +97,44 @@ class Map:
         if self.cells[cx][cy] == 1:
             self.cells[cx][cy] = 5
 
-    def update_fires(self):
-        for ri in range(self.h):
-            for ci in range(self.w):
-                cell = self.cells[ri][ci]
-                if cell == 5:
-                    self.cells[ri][ci] = 0
-        for i in range(10):       
-            self.add_fire()
-    
-
-
+    def update_fires(self, helico, tick):
+        if tick >= 200 and tick % FIRE_UPDATE == 0:
+            for ri in range(self.h):
+                for ci in range(self.w):
+                    cell = self.cells[ri][ci]
+                    if cell == 5:
+                        if self.cells[ri][ci] != 1:
+                            self.cells[ri][ci] = 0
+                            helico.score -= TREE_LOST
+            for i in range(10):
+                self.add_fire()
 
     def process_helicopter(self, helico, clouds):
         c = self.cells[helico.x][helico.y]
         d = clouds.cells[helico.x][helico.y]
-        if (c == 2):
+        if c == 2:
             helico.tank = helico.mxtank
-        if (c == 5 and helico.tank > 0):
-            helico.tank -= 1 
+        if c == 5 and helico.tank > 0:
+            helico.tank -= 1
+            self.cells[helico.x][helico.y] = 0
             helico.score += TREE_BONUS
-            self.cells[helico.x][helico.y] = 1
-        if (c == 4 and helico.score >= UPGRADE_COST):
+        if c == 4 and helico.score >= UPGRADE_COST:
             helico.mxtank += 1
             helico.score -= UPGRADE_COST
-        if (c == 3 and helico.score >= LIFE_COST):
+        if c == 3 and helico.score >= LIFE_COST:
             helico.lives += 10
             helico.score -= LIFE_COST
-        if (d == 2):
+        if d == 2:
             helico.lives -= 1
-            if (helico.lives == 0):
+            if helico.lives == 0:
                 os.system("cls")
                 print("GAME OVER", helico.score)
                 exit(0)
 
-
     def export_data(self):
         return {"cells": self.cells}
+    
+    def import_data(self, data):
+        self.cells = data["cells"] or [[0 for i in range(self.w)] for j in range(self.h)]
 
                 
